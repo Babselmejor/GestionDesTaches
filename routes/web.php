@@ -20,34 +20,6 @@ Route::get('/', function () {
     return view('home');
 })->middleware('auth');
 
-Route::controller(TaskController::class)
-    ->name('task.')
-    ->group(function(){
-
-    Route::get('/task','index')->name('index');
-    Route::get('/task/{task}','show')->name('show');
-    Route::get('/task/create','create')->name('create');
-    Route::post('/task/create','store')->name('store');
-    Route::get('/task/edit/{task}','edit')->name('edit');
-    Route::post('/task/edit/{task}','update')->name('update');
-
-})->middleware('auth');
-
-
-Route::prefix('admin')
-    ->middleware('auth')
-    ->name('admin.')
-    ->controller()
-    ->group(function () {
-
-    Route::get('users', [UserController::class,'index'])->name('users.index');
-    Route::post('/users/{user}',[UserController::class,'update'])->name('users.update');
-    Route::get('/users/{user}',[UserController::class,'destroy'])->name('users.destroy');
-});
-
-
-
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -57,5 +29,40 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::prefix('admin')
+    ->controller(UserController::class)
+    ->name('admin.users.')
+    ->middleware('can:admin')
+    ->group(function () {
+
+    Route::get('users','index')->name('index');
+    Route::get('/users/edit/{user}','edit')->name('edit');
+    Route::post('/users/edit/{user}','update')->name('update');
+});
+
+
+Route::prefix('task')
+    ->controller(TaskController::class)
+    ->name('task.')
+    ->group(function () {
+
+    Route::get('/','index')->name('index');
+    Route::get('/assigned','MyTask')->name('MyTask');
+});
+
+
+// Route::controller(TaskController::class)
+//     ->name('task.')
+//     ->group(function(){
+
+//     Route::get('/task','index')->name('index');
+//     Route::get('/task/{task}','show')->name('show');
+//     Route::get('/task/create','create')->name('create');
+//     Route::post('/task/create','store')->name('store');
+//     Route::get('/task/edit/{task}','edit')->name('edit');
+//     Route::post('/task/edit/{task}','update')->name('update');
+
+// })->middleware('auth');
 
 require __DIR__.'/auth.php';

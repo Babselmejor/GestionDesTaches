@@ -12,24 +12,28 @@ class TaskController extends Controller
 
     }
 
-    public function show()
+    public function MyTask()
     {
         
     }
+    // public function show()
+    // {
+        
+    // }
 
-    public function create()
-    {
+    // public function create()
+    // {
 
-    }
+    // }
 
-    public function store()
-    {
+    // public function store()
+    // {
 
-    }
+    // }
 
-    public function edit()
-    {
+    // public function edit()
+    // {
 
-    }
+    // }
 
 }
